@@ -1,122 +1,197 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { QUESTIONS } from './data/questions';
+import { calculateFootprint } from './utils/calculator';
+import StepIcon from './components/StepIcon';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+
+  const question = QUESTIONS[currentStep];
+  const isLastStep = currentStep === QUESTIONS.length;
+
+  const handleOptionChange = (questionId, optionId, isCheckbox) => {
+    if (isCheckbox) {
+      const currentList = answers[questionId] || [];
+      const updatedList = currentList.includes(optionId)
+        ? currentList.filter((id) => id !== optionId)
+        : [...currentList, optionId];
+      setAnswers({ ...answers, [questionId]: updatedList });
+    } else {
+      setAnswers({ ...answers, [questionId]: optionId });
+    }
+  };
+
+  const isOptionSelected = (questionId, optionId, isCheckbox) => {
+    if (isCheckbox) return (answers[questionId] || []).includes(optionId);
+    return answers[questionId] === optionId;
+  };
+
+  // PANTALLA FINAL DE RESULTADOS
+  if (isLastStep) {
+    const results = calculateFootprint(answers);
+    const fillPercentage = Math.min(Math.round((results.totalKg / 8000) * 100), 100);
+
+    return (
+      <div className="min-h-screen bg-green-900 text-white flex flex-col items-center justify-center p-4 sm:p-8">
+        <div className="max-w-4xl w-full bg-green-950 p-6 sm:p-10 rounded-2xl shadow-2xl border border-green-700 text-center space-y-8">
+          <h1 className="text-2xl sm:text-4xl font-extrabold uppercase text-yellow-300 tracking-wide">
+            RESULTADO: TU HUELLA DE CARBONO ANUAL
+          </h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            {/* Termómetro visual */}
+            <div className="flex flex-col items-center bg-green-900/50 p-6 rounded-xl border border-green-800">
+              <div className="w-16 h-64 bg-gray-200 rounded-full p-2 relative flex flex-col justify-end border-4 border-white shadow-inner">
+                <div
+                  className={`w-full rounded-full transition-all duration-1000 ${results.levelBg}`}
+                  style={{ height: `${fillPercentage}%` }}
+                />
+              </div>
+              <p className="mt-4 font-bold text-xl uppercase tracking-wider text-yellow-300">
+                Nivel: {results.level}
+              </p>
+            </div>
+
+            {/* Cifras y Equivalencias */}
+            <div className="text-left space-y-4 bg-green-900/50 p-6 rounded-xl border border-green-800">
+              <p className="text-2xl sm:text-3xl font-extrabold">
+                Produces <span className="text-yellow-300">{results.totalKg} kg</span> de CO2e al año.
+              </p>
+              
+              <hr className="border-green-700 my-2" />
+              
+              <div className="space-y-3 text-sm sm:text-base">
+                <p>🌳 Equivale a cortar aproximadamente <span className="font-extrabold text-yellow-300">{results.treesNeeded} árboles</span> al año.</p>
+                <p>🚗 Equivale a recorrer <span className="font-extrabold text-yellow-300">{results.carKm} km</span> en un automóvil particular.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Desglose por Categoría */}
+          <div className="bg-green-900/40 p-6 rounded-xl border border-green-800 text-left">
+            <h3 className="text-lg font-bold text-yellow-300 uppercase mb-4">Emisiones por Categoría</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-green-950 p-4 rounded-lg border border-green-800">
+                <p className="text-xs text-gray-400 font-bold uppercase">🏠 Hogar</p>
+                <p className="text-xl font-extrabold text-white">{results.breakdown.hogar} kg CO2e</p>
+              </div>
+              <div className="bg-green-950 p-4 rounded-lg border border-green-800">
+                <p className="text-xs text-gray-400 font-bold uppercase">🚗 Transporte</p>
+                <p className="text-xl font-extrabold text-white">{results.breakdown.transporte} kg CO2e</p>
+              </div>
+              <div className="bg-green-950 p-4 rounded-lg border border-green-800">
+                <p className="text-xs text-gray-400 font-bold uppercase">🥗 Consumo</p>
+                <p className="text-xl font-extrabold text-white">{results.breakdown.consumo} kg CO2e</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Recomendaciones */}
+          <div className="bg-green-900/40 p-6 rounded-xl border border-green-800 text-left">
+            <h3 className="text-lg font-bold text-yellow-300 uppercase mb-3">Recomendaciones de Acción</h3>
+            <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-gray-200">
+              {results.recommendations.map((rec, index) => (
+                <li key={index}>{rec}</li>
+              ))}
+            </ul>
+          </div>
+
+          <button
+            onClick={() => {
+              setAnswers({});
+              setCurrentStep(0);
+            }}
+            className="px-8 py-3 bg-yellow-400 hover:bg-yellow-300 text-green-950 font-extrabold rounded-full text-lg cursor-pointer transition-transform hover:scale-105"
+          >
+            VOLVER A CALCULAR
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // PANTALLA DEL CUESTIONARIO
+  const progressPercent = Math.round(((currentStep + 1) / QUESTIONS.length) * 100);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-between p-4 sm:p-8 text-gray-800">
+      {/* Barra de Progreso */}
+      <div className="w-full max-w-3xl mb-6">
+        <div className="flex justify-between text-xs sm:text-sm font-bold text-green-900 mb-2">
+          <span>Pregunta {currentStep + 1} de {QUESTIONS.length}</span>
+          <span>{progressPercent}% Completado</span>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+        <div className="w-full bg-gray-300 h-3 rounded-full overflow-hidden">
+          <div
+            className="bg-green-600 h-full transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Tarjeta de Pregunta */}
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg max-w-3xl w-full border border-gray-200 my-auto">
+        <div className="flex items-center space-x-3 mb-2">
+          <StepIcon stepNumber={question.number} />
+          <h2 className="text-lg sm:text-xl font-extrabold text-green-900 uppercase">
+            {question.title}
+          </h2>
+        </div>
+        
+        {question.subtitle && (
+          <p className="text-xs font-bold text-green-700 mb-6 pl-10 tracking-wider">
+            {question.subtitle}
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+        )}
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+          {question.options.map((opt) => {
+            const isChecked = isOptionSelected(question.id, opt.id, question.type === 'checkbox');
+            return (
+              <label
+                key={opt.id}
+                className={`flex items-center space-x-3 p-3.5 border-2 rounded-xl cursor-pointer transition-all ${
+                  isChecked
+                    ? 'border-green-600 bg-green-50'
+                    : 'border-gray-200 hover:border-green-300'
+                }`}
+              >
+                <input
+                  type={question.type === 'checkbox' ? 'checkbox' : 'radio'}
+                  name={question.id}
+                  checked={isChecked}
+                  onChange={() => handleOptionChange(question.id, opt.id, question.type === 'checkbox')}
+                  className="w-5 h-5 text-green-600 focus:ring-green-500 rounded"
+                />
+                <span className="text-gray-700 font-semibold text-sm">{opt.label}</span>
+              </label>
+            );
+          })}
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {/* Botones de Navegación */}
+        <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-100">
+          <button
+            disabled={currentStep === 0}
+            onClick={() => setCurrentStep(currentStep - 1)}
+            className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl disabled:opacity-30 font-bold cursor-pointer"
+          >
+            ATRÁS
+          </button>
+          
+          <button
+            onClick={() => setCurrentStep(currentStep + 1)}
+            className="px-8 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold cursor-pointer shadow-md"
+          >
+            {currentStep === QUESTIONS.length - 1 ? 'VER RESULTADOS' : 'SIGUIENTE'}
+          </button>
+        </div>
+      </div>
+
+      <div className="text-xs text-gray-400 mt-4 text-center">
+        Calculadora de Huella de Carbono — Inspirada en Greenpeace
+      </div>
+    </div>
+  );
 }
-
-export default App
