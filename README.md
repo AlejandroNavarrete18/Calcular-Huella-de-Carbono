@@ -1,16 +1,42 @@
-# React + Vite
+# 🌿 Calculadora de Huella de Carbono — Greenpeace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web interactiva desarrollada en **React + Vite** y estilizada con **Tailwind CSS**. Permite evaluar el impacto ambiental individual en base a 9 preguntas clave divididas en tres sectores: **Hogar**, **Transporte** y **Consumo / Estilo de Vida**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💻 Requisitos Previos
 
-## React Compiler
+Antes de clonar e intentar ejecutar este proyecto en cualquier computadora, asegúrate de tener instaladas las siguientes herramientas:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Node.js (Versión LTS recomendada: 18.x o superior)**  
+   * Incluye el gestor de paquetes `npm`.
+   * Descarga desde: [nodejs.org](https://nodejs.org/)
+   * *Para verificar si ya lo tienes instalado, ejecuta en tu terminal:*
+     ```cmd
+     node -v
+     npm -v
+     ```
 
-## Expanding the ESLint configuration
+2. **Git**  
+   * Necesario para clonar el repositorio y gestionar las ramas y versiones del código.
+   * Descarga desde: [git-scm.com](https://git-scm.com/)
+   * *Para verificar la instalación:*
+     ```cmd
+     git --version
+     ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. **Visual Studio Code (Recomendado)**  
+   * Editor de código recomendado para trabajar en el proyecto.
+   * Descarga desde: [code.visualstudio.com](https://code.visualstudio.com/)
+
+---
+
+## 🚀 Pasos para Ejecutar el Proyecto desde Cero
+
+Sigue esta secuencia de comandos en tu terminal (CMD o PowerShell):
+
+### 1. Clonar el Repositorio
+Abre tu terminal en la carpeta donde deseas guardar el proyecto y ejecuta:
+
+```cmd
+git clone [https://github.com/TU_USUARIO/calculadora-huella-carbono.git](https://github.com/TU_USUARIO/calculadora-huella-carbono.git)
