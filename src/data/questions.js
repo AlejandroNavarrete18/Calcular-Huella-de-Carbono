@@ -1,5 +1,5 @@
 export const QUESTIONS = [
-  // CATEGORÍA: HOGAR
+  // Preguntas 1 a 6 se mantienen igual...
   {
     id: 'electrodomesticos',
     category: 'hogar',
@@ -47,8 +47,6 @@ export const QUESTIONS = [
       { id: 'no_se', label: 'No lo sé', kgCO2: 50 },
     ],
   },
-
-  // CATEGORÍA: TRANSPORTE
   {
     id: 'transporte',
     category: 'transporte',
@@ -67,6 +65,7 @@ export const QUESTIONS = [
       { id: 'caminando', label: 'Voy caminando', kgCO2: 0 },
     ],
   },
+// PREGUNTA 5: TIEMPO DE RECORRIDO
   {
     id: 'tiempo_recorrido',
     category: 'transporte',
@@ -74,15 +73,17 @@ export const QUESTIONS = [
     title: '5. ¿EN CUÁNTO TIEMPO HACES ESE RECORRIDO?',
     type: 'radio',
     options: [
-      { id: 'menos_10', label: 'Menos de 10 minutos', kgCO2: 50 },
-      { id: '10_20', label: 'Entre 10 y 20 minutos', kgCO2: 150 },
-      { id: '20_40', label: 'Entre 20 y 40 minutos', kgCO2: 300 },
-      { id: '40_60', label: 'Entre 40 minutos y 1 hora', kgCO2: 500 },
-      { id: 'hora_media', label: 'Una hora y media', kgCO2: 700 },
-      { id: 'mas_2_horas', label: 'Más de dos horas', kgCO2: 900 },
-      { id: 'mas_3_horas', label: 'Más de tres horas', kgCO2: 1200 },
+      { id: 'menos_10', label: 'Menos de 10 minutos', kgCO2: 120 },
+      { id: '10_20', label: 'Entre 10 y 20 minutos', kgCO2: 350 },
+      { id: '20_40', label: 'Entre 20 y 40 minutos', kgCO2: 680 },
+      { id: '40_60', label: 'Entre 40 minutos y 1 hora', kgCO2: 1050 },
+      { id: 'hora_media', label: 'Una hora y media', kgCO2: 1450 },
+      { id: 'mas_2_horas', label: 'Más de dos horas', kgCO2: 1950 },
+      { id: 'mas_3_horas', label: 'Más de tres horas', kgCO2: 2204.64 }, // <-- CAMBIAR AQUÍ (2204.64 en lugar de 2274.64)
     ],
   },
+
+  // PREGUNTA 6: VUELOS (Valores exactos de Greenpeace)
   {
     id: 'vuelos',
     category: 'transporte',
@@ -90,28 +91,35 @@ export const QUESTIONS = [
     title: '6. ¿CON QUÉ FRECUENCIA VUELAS EN AVIÓN?',
     type: 'radio',
     options: [
-      { id: 'frecuente', label: 'Viajero frecuente (más de dos vuelos int. y dos nac. al año)', kgCO2: 3000 },
-      { id: 'int_1', label: 'Aproximadamente un vuelo (ida y vuelta) internacional al año', kgCO2: 1200 },
-      { id: 'nac_mas_1', label: 'Más de un vuelo (ida y vuelta) nacional al año', kgCO2: 600 },
-      { id: 'nac_1', label: 'Aproximadamente un vuelo (ida y vuelta) nacional al año', kgCO2: 300 },
+      { id: 'frecuente', label: 'Viajero frecuente (más de dos vuelos int. y dos nac. al año)', kgCO2: 4074.64 },
+      { id: 'int_1', label: 'Aproximadamente un vuelo (ida y vuelta) internacional al año', kgCO2: 1800 },
+      { id: 'nac_mas_1', label: 'Más de un vuelo (ida y vuelta) nacional al año', kgCO2: 850 },
+      { id: 'nac_1', label: 'Aproximadamente un vuelo (ida y vuelta) nacional al año', kgCO2: 420 },
       { id: 'no_vuelo', label: 'No suelo volar', kgCO2: 0 },
     ],
   },
 
-  // CATEGORÍA: CONSUMO Y ESTILO DE VIDA
+  // PREGUNTA 7 MATRICIAL
   {
-    id: 'carne',
+    id: 'carne_matriz',
     category: 'consumo',
     number: 7,
-    title: '7. ¿CON QUÉ FRECUENCIA COMES CARNE DE RES O CERDO?',
-    type: 'radio',
-    options: [
-      { id: 'diario', label: 'Diario', kgCO2: 1800 },
-      { id: '4_6_dias', label: '4 a 6 días a la semana', kgCO2: 1100 },
-      { id: '1_3_dias', label: '1 a 3 días a la semana', kgCO2: 500 },
-      { id: 'no_consumo', label: 'No consumo carne', kgCO2: 0 },
+    title: '7. ¿CON QUÉ FRECUENCIA COMES CARNE DE?',
+    type: 'matrix',
+    columns: [
+      { id: 'diario', label: 'Diario' },
+      { id: '4_6_dias', label: '4-6 días a la semana' },
+      { id: '1_3_dias', label: '1-3 días a la semana' },
+      { id: 'no_consumo', label: 'No consumo' },
+    ],
+    rows: [
+      { id: 'res', label: 'Res', weights: { diario: 1478.25, '4_6_dias': 1053.0, '1_3_dias': 421.2, no_consumo: 0 } },
+      { id: 'cerdo', label: 'Cerdo', weights: { diario: 662.48, '4_6_dias': 471.9, '1_3_dias': 188.76, no_consumo: 0 } },
+      { id: 'pollo', label: 'Pollo', weights: { diario: 377.78, '4_6_dias': 269.1, '1_3_dias': 107.64, no_consumo: 0 } },
+      { id: 'pescado', label: 'Pescado', weights: { diario: 295.65, '4_6_dias': 210.6, '1_3_dias': 84.24, no_consumo: 0 } },
     ],
   },
+
   {
     id: 'plasticos',
     category: 'consumo',
@@ -120,7 +128,7 @@ export const QUESTIONS = [
     type: 'radio',
     options: [
       { id: 'diario', label: 'Diario', kgCO2: 300 },
-      { id: 'semanal', label: 'De vez en cuando (1 vez por semana)', kgCO2: 100 },
+      { id: 'semanal', label: 'De vez en cuando (1 vez por semana)', kgCO2: 160.5 }, // <-- Cambiar 100 por 160.5
       { id: 'rara_vez', label: 'Rara vez', kgCO2: 40 },
       { id: 'no_uso', label: 'No uso plástico', kgCO2: 0 },
     ],
@@ -136,6 +144,28 @@ export const QUESTIONS = [
       { id: 'nueva_nacional', label: 'Siempre es nueva y nacional', kgCO2: 200 },
       { id: 'segunda_mano', label: 'De segunda mano', kgCO2: 50 },
       { id: 'reparo', label: 'La reparo y reutilizo', kgCO2: 20 },
+    ],
+  },
+
+  // PREGUNTA 10 MATRICIAL
+  {
+    id: 'dispositivos_matriz',
+    category: 'consumo',
+    number: 10,
+    title: '10. CADA CUÁNTO CAMBIO MIS DISPOSITIVOS ELECTRÓNICOS',
+    type: 'matrix',
+    columns: [
+      { id: 'cada_6_meses', label: 'Cada 6 meses' },
+      { id: 'cada_ano', label: 'Cada año' },
+      { id: '2_3_anos', label: 'De 2 a 3 años' },
+      { id: 'mas_3_anos', label: 'Más de 3 años' },
+      { id: 'no_tengo', label: 'No tengo este dispositivo' },
+    ],
+    rows: [
+      { id: 'celular', label: 'Celular', weights: { cada_6_meses: 70.0, cada_ano: 35.0, '2_3_anos': 14.0, mas_3_anos: 8.75, no_tengo: 0 } },
+      { id: 'tableta', label: 'Tableta', weights: { cada_6_meses: 180.0, cada_ano: 90.0, '2_3_anos': 36.0, mas_3_anos: 22.5, no_tengo: 0 } },
+      { id: 'computadora', label: 'Computadora', weights: { cada_6_meses: 700.0, cada_ano: 350.0, '2_3_anos': 140.0, mas_3_anos: 87.5, no_tengo: 0 } },
+      { id: 'consola', label: 'Consola de videojuegos', weights: { cada_6_meses: 300.0, cada_ano: 150.0, '2_3_anos': 60.0, mas_3_anos: 37.5, no_tengo: 0 } },
     ],
   },
 ];

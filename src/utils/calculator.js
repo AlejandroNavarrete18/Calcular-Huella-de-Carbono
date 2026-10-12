@@ -1,8 +1,8 @@
 import { QUESTIONS } from '../data/questions';
 
 export function calculateFootprint(answers) {
-  let totalKg = 0;
-  const breakdown = {
+  let rawTotal = 0;
+  const rawBreakdown = {
     hogar: 0,
     transporte: 0,
     consumo: 0,
@@ -16,24 +16,39 @@ export function calculateFootprint(answers) {
       userAnswer.forEach((itemId) => {
         const opt = q.options.find((o) => o.id === itemId);
         if (opt) {
-          totalKg += opt.kgCO2;
-          breakdown[q.category] += opt.kgCO2;
+          rawTotal += opt.kgCO2;
+          rawBreakdown[q.category] += opt.kgCO2;
         }
       });
     } else if (q.type === 'radio') {
       const opt = q.options.find((o) => o.id === userAnswer);
       if (opt) {
-        totalKg += opt.kgCO2;
-        breakdown[q.category] += opt.kgCO2;
+        rawTotal += opt.kgCO2;
+        rawBreakdown[q.category] += opt.kgCO2;
       }
+    } else if (q.type === 'matrix') {
+      q.rows.forEach((row) => {
+        const selectedCol = userAnswer[row.id];
+        if (selectedCol && row.weights[selectedCol] !== undefined) {
+          const val = row.weights[selectedCol];
+          rawTotal += val;
+          rawBreakdown[q.category] += val;
+        }
+      });
     }
   });
 
-  // Equivalencias
-  const treesNeeded = Math.round(totalKg / 20); // 1 árbol absorbe ~20kg CO2/año
-  const carKm = Math.round(totalKg / 0.19);      // ~0.19kg por km recorrido
+  // REDONDEO A 1 DECIMAL (Resuelve los decimales infinitos)
+  const totalKg = Number(rawTotal.toFixed(1));
+  const breakdown = {
+    hogar: Number(rawBreakdown.hogar.toFixed(1)),
+    transporte: Number(rawBreakdown.transporte.toFixed(1)),
+    consumo: Number(rawBreakdown.consumo.toFixed(1)),
+  };
 
-  // Nivel de impacto y colores del termómetro
+  const treesNeeded = Math.round(totalKg / 58.5);
+  const carKm = Math.round(totalKg / 0.19);
+
   let level = 'Bajo impacto';
   let levelBg = 'bg-green-500';
 
@@ -45,24 +60,20 @@ export function calculateFootprint(answers) {
     levelBg = 'bg-yellow-500';
   }
 
-  // Recomendaciones personalizadas
   const recommendations = [];
 
   if (answers.focos === 'incandescentes' || answers.focos === 'no_se') {
-    recommendations.push('Sustituye tus focos incandescentes por tecnología LED para reducir hasta un 80% el consumo eléctrico en iluminación.');
+    recommendations.push('Sustituye tus focos incandescentes por tecnología LED para reducir el consumo eléctrico.');
   }
   if (Array.isArray(answers.transporte) && answers.transporte.includes('auto')) {
-    recommendations.push('Considera compartir auto (carpooling) o usar transporte público 1 o 2 días a la semana.');
+    recommendations.push('Considera compartir auto o usar transporte público 1 o 2 días a la semana.');
   }
-  if (answers.carne === 'diario' || answers.carne === '4_6_dias') {
-    recommendations.push('Implementa la iniciativa "Lunes sin carne" para reducir significativamente las emisiones derivadas de la producción ganadera.');
-  }
-  if (answers.plasticos === 'diario') {
-    recommendations.push('Lleva contigo termos o bolsas reutilizables para evitar plásticos de un solo uso.');
+  if (answers.carne_matriz?.res === 'diario' || answers.carne_matriz?.res === '4_6_dias') {
+    recommendations.push('Reduce el consumo diario de carne de res para disminuir las emisiones ganaderas.');
   }
 
   if (recommendations.length === 0) {
-    recommendations.push('¡Excelente trabajo! Tus hábitos actuales contribuyen activamente a un menor impacto ambiental.');
+    recommendations.push('¡Excelente trabajo! Tus hábitos contribuyen a una menor huella ecológica.');
   }
 
   return {
