@@ -1,4 +1,4 @@
-# 🌿 Calculadora de Huella de Carbono — Greenpeace
+# 🌿 Calculadora de Huella de Carbono
 
 Aplicación web interactiva desarrollada en **React + Vite** y estilizada con **Tailwind CSS**. Permite evaluar el impacto ambiental individual en base a 9 preguntas clave divididas en tres sectores: **Hogar**, **Transporte** y **Consumo / Estilo de Vida**.
 

@@ -1,5 +1,7 @@
 export const QUESTIONS = [
-  // Preguntas 1 a 6 se mantienen igual...
+  // Pesos (kg CO2e/año)
+
+  // PREGUNTA 1: ELECTRODOMESTICOS UTILIZADOS 
   {
     id: 'electrodomesticos',
     category: 'hogar',
@@ -8,19 +10,19 @@ export const QUESTIONS = [
     subtitle: 'SELECCIONA TODOS LOS QUE TENGAS',
     type: 'checkbox',
     options: [
-      { id: 'refrigerador', label: 'Refrigerador', kgCO2: 120 },
-      { id: 'microondas', label: 'Horno de microondas', kgCO2: 40 },
-      { id: 'computadora', label: 'Computadora', kgCO2: 60 },
-      { id: 'laptop', label: 'Laptop', kgCO2: 30 },
-      { id: 'consola', label: 'Consola de videojuegos', kgCO2: 50 },
-      { id: 'estereo', label: 'Estéreo', kgCO2: 30 },
-      { id: 'tv', label: 'Televisión', kgCO2: 70 },
-      { id: 'lavadora', label: 'Lavadora', kgCO2: 80 },
-      { id: 'secadora', label: 'Secadora de ropa', kgCO2: 150 },
-      { id: 'lavatrastes', label: 'Lavatrastes', kgCO2: 100 },
-      { id: 'aspiradora', label: 'Aspiradora', kgCO2: 40 },
-      { id: 'aire', label: 'Aire acondicionado', kgCO2: 250 },
-      { id: 'ventiladores', label: 'Ventiladores', kgCO2: 30 },
+      { id: 'refrigerador', label: 'Refrigerador', kgCO2: 237 },
+      { id: 'microondas', label: 'Horno de microondas', kgCO2: 19.6 },
+      { id: 'computadora', label: 'Computadora', kgCO2: 128 },
+      { id: 'laptop', label: 'Laptop', kgCO2: 64 },
+      { id: 'consola', label: 'Consola de videojuegos', kgCO2: 20 },
+      { id: 'estereo', label: 'Estéreo', kgCO2: 3 },
+      { id: 'tv', label: 'Televisión', kgCO2: 82 },
+      { id: 'lavadora', label: 'Lavadora', kgCO2: 21 },
+      { id: 'secadora', label: 'Secadora de ropa', kgCO2: 57 },
+      { id: 'lavatrastes', label: 'Lavatrastes', kgCO2: 68 },
+      { id: 'aspiradora', label: 'Aspiradora', kgCO2: 35 },
+      { id: 'aire', label: 'Aire acondicionado', kgCO2: 227 },
+      { id: 'ventiladores', label: 'Ventiladores', kgCO2: 96 },
     ],
   },
   {
@@ -30,8 +32,8 @@ export const QUESTIONS = [
     title: '2. EN MI DOMICILIO UTILIZO:',
     type: 'radio',
     options: [
-      { id: 'gas_natural', label: 'Gas natural', kgCO2: 200 },
-      { id: 'gas_lp', label: 'Gas LP', kgCO2: 280 },
+      { id: 'gas_natural', label: 'Gas natural', kgCO2: 189 },
+      { id: 'gas_lp', label: 'Gas LP', kgCO2: 153 },
     ],
   },
   {
@@ -41,10 +43,10 @@ export const QUESTIONS = [
     title: '3. EN MI CASA LOS FOCOS SON:',
     type: 'radio',
     options: [
-      { id: 'led', label: 'LED', kgCO2: 15 },
-      { id: 'ahorradores', label: 'Ahorradores', kgCO2: 35 },
-      { id: 'incandescentes', label: 'Incandescentes', kgCO2: 120 },
-      { id: 'no_se', label: 'No lo sé', kgCO2: 50 },
+      { id: 'led', label: 'LED', kgCO2: 12 },
+      { id: 'ahorradores', label: 'Ahorradores', kgCO2: 31 },
+      { id: 'incandescentes', label: 'Incandescentes', kgCO2: 61 },
+      { id: 'no_se', label: 'No lo sé', kgCO2: 35 },
     ],
   },
   {
@@ -55,13 +57,13 @@ export const QUESTIONS = [
     subtitle: 'SELECCIONA LAS OPCIONES QUE APLIQUEN',
     type: 'checkbox',
     options: [
-      { id: 'auto', label: 'Auto', kgCO2: 1200 },
-      { id: 'autobus', label: 'Autobús', kgCO2: 300 },
+      { id: 'auto', label: 'Auto', kgCO2: 4160 },
+      { id: 'autobus', label: 'Autobús', kgCO2: 310 },
       { id: 'bicicleta', label: 'Bicicleta', kgCO2: 0 },
-      { id: 'combi', label: 'Combi', kgCO2: 250 },
-      { id: 'metro', label: 'Metro', kgCO2: 150 },
-      { id: 'metrobus', label: 'Metrobús', kgCO2: 150 },
-      { id: 'motocicleta', label: 'Motocicleta', kgCO2: 600 },
+      { id: 'combi', label: 'Combi', kgCO2: 1090 },
+      { id: 'metro', label: 'Metro', kgCO2: 0 },
+      { id: 'metrobus', label: 'Metrobús', kgCO2: 90 },
+      { id: 'motocicleta', label: 'Motocicleta', kgCO2: 2080 },
       { id: 'caminando', label: 'Voy caminando', kgCO2: 0 },
     ],
   },
@@ -73,17 +75,15 @@ export const QUESTIONS = [
     title: '5. ¿EN CUÁNTO TIEMPO HACES ESE RECORRIDO?',
     type: 'radio',
     options: [
-      { id: 'menos_10', label: 'Menos de 10 minutos', kgCO2: 120 },
-      { id: '10_20', label: 'Entre 10 y 20 minutos', kgCO2: 350 },
-      { id: '20_40', label: 'Entre 20 y 40 minutos', kgCO2: 680 },
-      { id: '40_60', label: 'Entre 40 minutos y 1 hora', kgCO2: 1050 },
-      { id: 'hora_media', label: 'Una hora y media', kgCO2: 1450 },
-      { id: 'mas_2_horas', label: 'Más de dos horas', kgCO2: 1950 },
-      { id: 'mas_3_horas', label: 'Más de tres horas', kgCO2: 2204.64 }, // <-- CAMBIAR AQUÍ (2204.64 en lugar de 2274.64)
+      { id: 'menos_10', label: 'Menos de 10 minutos', hours: 0.08 },
+      { id: '10_20', label: 'Entre 10 y 20 minutos', hours: 0.25 },
+      { id: '20_40', label: 'Entre 20 y 40 minutos', hours: 0.5 },
+      { id: '40_60', label: 'Entre 40 minutos y 1 hora', hours: 0.83 },
+      { id: 'hora_media', label: 'Una hora y media', hours: 1.5 },
+      { id: 'mas_2_horas', label: 'Más de dos horas', hours: 2.5 },
+      { id: 'mas_3_horas', label: 'Más de tres horas', hours: 3.5 },
     ],
   },
-
-  // PREGUNTA 6: VUELOS (Valores exactos de Greenpeace)
   {
     id: 'vuelos',
     category: 'transporte',
@@ -91,15 +91,15 @@ export const QUESTIONS = [
     title: '6. ¿CON QUÉ FRECUENCIA VUELAS EN AVIÓN?',
     type: 'radio',
     options: [
-      { id: 'frecuente', label: 'Viajero frecuente (más de dos vuelos int. y dos nac. al año)', kgCO2: 4074.64 },
-      { id: 'int_1', label: 'Aproximadamente un vuelo (ida y vuelta) internacional al año', kgCO2: 1800 },
-      { id: 'nac_mas_1', label: 'Más de un vuelo (ida y vuelta) nacional al año', kgCO2: 850 },
-      { id: 'nac_1', label: 'Aproximadamente un vuelo (ida y vuelta) nacional al año', kgCO2: 420 },
+      { id: 'frecuente', label: 'Viajero frecuente (más de dos vuelos int. y dos nac. al año)', kgCO2: 4600 },
+      { id: 'int_1', label: 'Aproximadamente un vuelo (ida y vuelta) internacional al año', kgCO2: 2000 },
+      { id: 'nac_mas_1', label: 'Más de un vuelo (ida y vuelta) nacional al año', kgCO2: 500 },
+      { id: 'nac_1', label: 'Aproximadamente un vuelo (ida y vuelta) nacional al año', kgCO2: 200 },
       { id: 'no_vuelo', label: 'No suelo volar', kgCO2: 0 },
     ],
   },
 
-  // PREGUNTA 7 MATRICIAL
+  // PREGUNTA 7 FRECUENCIA CONSUMO DE CARNE (MATRIZ)
   {
     id: 'carne_matriz',
     category: 'consumo',
@@ -113,10 +113,10 @@ export const QUESTIONS = [
       { id: 'no_consumo', label: 'No consumo' },
     ],
     rows: [
-      { id: 'res', label: 'Res', weights: { diario: 1478.25, '4_6_dias': 1053.0, '1_3_dias': 421.2, no_consumo: 0 } },
-      { id: 'cerdo', label: 'Cerdo', weights: { diario: 662.48, '4_6_dias': 471.9, '1_3_dias': 188.76, no_consumo: 0 } },
-      { id: 'pollo', label: 'Pollo', weights: { diario: 377.78, '4_6_dias': 269.1, '1_3_dias': 107.64, no_consumo: 0 } },
-      { id: 'pescado', label: 'Pescado', weights: { diario: 295.65, '4_6_dias': 210.6, '1_3_dias': 84.24, no_consumo: 0 } },
+      { id: 'res', label: 'Res', weights: { diario: 2360, '4_6_dias': 1865, '1_3_dias': 675, no_consumo: 0 } },
+      { id: 'cerdo', label: 'Cerdo', weights: { diario: 540, '4_6_dias': 386, '1_3_dias': 155, no_consumo: 0 } },
+      { id: 'pollo', label: 'Pollo', weights: { diario: 344, '4_6_dias': 245, '1_3_dias': 98, no_consumo: 0 } },
+      { id: 'pescado', label: 'Pescado', weights: { diario: 128, '4_6_dias': 91, '1_3_dias': 37, no_consumo: 0 } },
     ],
   },
 
@@ -127,9 +127,9 @@ export const QUESTIONS = [
     title: '8. ¿CON QUÉ REGULARIDAD UTILIZAS PLÁSTICOS DE UN SOLO USO?',
     type: 'radio',
     options: [
-      { id: 'diario', label: 'Diario', kgCO2: 300 },
-      { id: 'semanal', label: 'De vez en cuando (1 vez por semana)', kgCO2: 160.5 }, // <-- Cambiar 100 por 160.5
-      { id: 'rara_vez', label: 'Rara vez', kgCO2: 40 },
+      { id: 'diario', label: 'Diario', kgCO2: 8 },
+      { id: 'semanal', label: 'De vez en cuando (1 vez por semana)', kgCO2: 3 }, 
+      { id: 'rara_vez', label: 'Rara vez', kgCO2: 1 },
       { id: 'no_uso', label: 'No uso plástico', kgCO2: 0 },
     ],
   },
@@ -140,14 +140,14 @@ export const QUESTIONS = [
     title: '9. LA ROPA QUE UTILIZO:',
     type: 'radio',
     options: [
-      { id: 'nueva_importada', label: 'Siempre es nueva y de importación', kgCO2: 400 },
-      { id: 'nueva_nacional', label: 'Siempre es nueva y nacional', kgCO2: 200 },
-      { id: 'segunda_mano', label: 'De segunda mano', kgCO2: 50 },
-      { id: 'reparo', label: 'La reparo y reutilizo', kgCO2: 20 },
+      { id: 'nueva_importada', label: 'Siempre es nueva y de importación', kgCO2: 403 },
+      { id: 'nueva_nacional', label: 'Siempre es nueva y nacional', kgCO2: 254 },
+      { id: 'segunda_mano', label: 'De segunda mano', kgCO2: 127 },
+      { id: 'reparo', label: 'La reparo y reutilizo', kgCO2: 85 },
     ],
   },
 
-  // PREGUNTA 10 MATRICIAL
+  // PREGUNTA 10 DISPOSITIVOS ELECTRÓNICOS (MATRIZ)
   {
     id: 'dispositivos_matriz',
     category: 'consumo',
@@ -162,10 +162,10 @@ export const QUESTIONS = [
       { id: 'no_tengo', label: 'No tengo este dispositivo' },
     ],
     rows: [
-      { id: 'celular', label: 'Celular', weights: { cada_6_meses: 70.0, cada_ano: 35.0, '2_3_anos': 14.0, mas_3_anos: 8.75, no_tengo: 0 } },
-      { id: 'tableta', label: 'Tableta', weights: { cada_6_meses: 180.0, cada_ano: 90.0, '2_3_anos': 36.0, mas_3_anos: 22.5, no_tengo: 0 } },
-      { id: 'computadora', label: 'Computadora', weights: { cada_6_meses: 700.0, cada_ano: 350.0, '2_3_anos': 140.0, mas_3_anos: 87.5, no_tengo: 0 } },
-      { id: 'consola', label: 'Consola de videojuegos', weights: { cada_6_meses: 300.0, cada_ano: 150.0, '2_3_anos': 60.0, mas_3_anos: 37.5, no_tengo: 0 } },
+      { id: 'celular', label: 'Celular', weights: { cada_6_meses: 120, cada_ano: 60, '2_3_anos': 25, mas_3_anos: 15, no_tengo: 0 } },
+      { id: 'tableta', label: 'Tableta', weights: { cada_6_meses: 340, cada_ano: 170, '2_3_anos': 68, mas_3_anos: 43, no_tengo: 0 } },
+      { id: 'computadora', label: 'Computadora', weights: { cada_6_meses: 700, cada_ano: 350, '2_3_anos': 140, mas_3_anos: 88, no_tengo: 0 } },
+      { id: 'consola', label: 'Consola de videojuegos', weights: { cada_6_meses: 180, cada_ano: 90, '2_3_anos': 36, mas_3_anos: 22, no_tengo: 0 } },
     ],
   },
 ];

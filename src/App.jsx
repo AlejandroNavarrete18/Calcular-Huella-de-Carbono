@@ -63,21 +63,26 @@ export default function App() {
   // PANTALLA FINAL DE RESULTADOS
   if (isLastStep) {
     const results = calculateFootprint(answers);
-    const fillPercentage = Math.min(Math.round((results.totalKg / 8000) * 100), 100);
+    const fillPercentage = results.termoPercent;
 
     return (
       <div className="min-h-screen bg-green-900 text-white flex flex-col items-center justify-center p-4 sm:p-8">
         <div className="max-w-4xl w-full bg-green-950 p-6 sm:p-10 rounded-2xl shadow-2xl border border-green-700 text-center space-y-8">
           <h1 className="text-2xl sm:text-4xl font-extrabold uppercase text-yellow-300 tracking-wide">
-            RESULTADO: TU HUELLA DE CARBONO ANUAL
+            {results.title}
           </h1>
+          <div className="text-gray-200 text-sm sm:text-base space-y-3 text-left">
+            {results.description.map((par, i) => (
+              <p key={i}>{par}</p>
+            ))}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div className="flex flex-col items-center bg-green-900/50 p-6 rounded-xl border border-green-800">
               <div className="w-16 h-64 bg-gray-200 rounded-full p-2 relative flex flex-col justify-end border-4 border-white shadow-inner">
                 <div
-                  className={`w-full rounded-full transition-all duration-1000 ${results.levelBg}`}
-                  style={{ height: `${fillPercentage}%` }}
+                  className="w-full rounded-full transition-all duration-1000"
+                  style={{ height: `${fillPercentage}%`, backgroundColor: results.barColors.hogar && (results.totalKg <= 2000 ? '#005100' : results.totalKg <= 4000 ? '#E5B602' : results.totalKg <= 6000 ? '#D36709' : '#C4250F') }}
                 />
               </div>
               <p className="mt-4 font-bold text-xl uppercase tracking-wider text-yellow-300">
@@ -91,8 +96,7 @@ export default function App() {
               </p>
               <hr className="border-green-700 my-2" />
               <div className="space-y-3 text-sm sm:text-base">
-                <p>🌳 Equivale a cortar aproximadamente <span className="font-extrabold text-yellow-300">{results.treesNeeded} árboles</span> al año.</p>
-                <p>🚗 Equivale a recorrer <span className="font-extrabold text-yellow-300">{results.carKm} km</span> en un automóvil particular.</p>
+                <p>🌳 {results.treesText}</p>
               </div>
             </div>
           </div>
@@ -103,14 +107,17 @@ export default function App() {
               <div className="bg-green-950 p-4 rounded-lg border border-green-800">
                 <p className="text-xs text-gray-400 font-bold uppercase">🏠 Hogar</p>
                 <p className="text-xl font-extrabold text-white">{results.breakdown.hogar} kg CO2e</p>
+                <div className="w-full h-2 bg-gray-700 rounded mt-2"><div className="h-2 rounded" style={{ width: `${results.percentages.hogar}%`, backgroundColor: results.barColors.hogar }} /></div>
               </div>
               <div className="bg-green-950 p-4 rounded-lg border border-green-800">
                 <p className="text-xs text-gray-400 font-bold uppercase">🚗 Transporte</p>
                 <p className="text-xl font-extrabold text-white">{results.breakdown.transporte} kg CO2e</p>
+                <div className="w-full h-2 bg-gray-700 rounded mt-2"><div className="h-2 rounded" style={{ width: `${results.percentages.transporte}%`, backgroundColor: results.barColors.transporte }} /></div>
               </div>
               <div className="bg-green-950 p-4 rounded-lg border border-green-800">
-                <p className="text-xs text-gray-400 font-bold uppercase">🥗 Consumo</p>
+                <p className="text-xs text-gray-400 font-bold uppercase">🥗 Alimentación y consumo</p>
                 <p className="text-xl font-extrabold text-white">{results.breakdown.consumo} kg CO2e</p>
+                <div className="w-full h-2 bg-gray-700 rounded mt-2"><div className="h-2 rounded" style={{ width: `${results.percentages.consumo}%`, backgroundColor: results.barColors.consumo }} /></div>
               </div>
             </div>
           </div>
@@ -267,7 +274,7 @@ export default function App() {
       </div>
 
       <div className="text-xs text-gray-400 mt-4 text-center">
-        Calculadora de Huella de Carbono — Inspirada en Greenpeace
+        Calculadora de Huella de Carbono — UAS
       </div>
     </div>
   );
