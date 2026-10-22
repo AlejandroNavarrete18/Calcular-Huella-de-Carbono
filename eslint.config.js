@@ -19,7 +19,7 @@ export default defineConfig([
     },
   },
   {
-    // Código del servidor: corre en Node.js, no en el navegador.
+    //
     files: ['server/**/*.js'],
     languageOptions: { globals: globals.node },
   },
