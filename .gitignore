@@ -1,0 +1,29 @@
+# ── Dependencias ──
+node_modules/
+
+# ── Resultados de compilación y pruebas ──
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# ── Secretos y configuración local (NUNCA se suben al repositorio) ──
+.env
+.env.*
+!.env.example
+
+# ── Archivos generados por el servidor en modo de prueba ──
+.dry-run/
+
+# ── Logs ──
+logs/
+*.log
+npm-debug.log*
+
+# ── Editores y sistema operativo ──
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp

@@ -1,0 +1,13 @@
+# Normaliza los saltos de línea: en el repositorio SIEMPRE se guardan como LF,
+# sin importar el sistema operativo (evita diffs gigantes por CRLF en Windows).
+* text=auto eol=lf
+
+# Archivos binarios: nunca se convierten ni se comparan como texto.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
