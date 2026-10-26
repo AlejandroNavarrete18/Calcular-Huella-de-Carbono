@@ -4,7 +4,7 @@ import { EMAIL_LOGOS } from './emailAssets.js';
  * Plantilla del correo con los resultados.
  */
 
-/** Paleta institucional (la misma de la web). */
+/** Paleta institucional*/
 const COLOR = Object.freeze({
   navy950: '#071a3b',
   navy900: '#0a2352',
@@ -47,7 +47,6 @@ function pillTextColor(background) {
   return COLOR.white;
 }
 
-/** "Hola, Ana:" o "Hola:" si no hay nombre. */
 function buildGreeting(name) {
   if (name) {
     return `Hola, ${name}:`;

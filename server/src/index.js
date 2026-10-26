@@ -14,7 +14,6 @@ try {
 } catch (err) {
   if (err instanceof ConfigError) {
     logger.error(err.message);
-    logger.error('Copia server/.env.example a server/.env y complétalo (guía: docs/configuracion-correo.md).');
     process.exit(1);
   }
   throw err;
@@ -30,7 +29,7 @@ const mailService = createMailService(config.mail, logger);
 // Verificar Gmail al arrancar da un aviso inmediato si la contraseña es incorrecta.
 mailService.verify().catch((err) => {
   logger.error('No se pudo verificar la conexión con Gmail:', err.code ?? '', err.message);
-  logger.error('Revisa GMAIL_USER y GMAIL_APP_PASSWORD en server/.env (ver docs/configuracion-correo.md).');
+  logger.error('Revisa GMAIL_USER y GMAIL_APP_PASSWORD en server/.env');
 });
 
 const app = createApp({ config, mailService, logger });

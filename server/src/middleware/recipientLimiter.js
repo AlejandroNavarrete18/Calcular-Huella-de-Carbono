@@ -6,9 +6,9 @@ import { createHash } from 'node:crypto';
  * @param {{max: number, windowMs: number, now?: () => number}} options
  */
 export function createRecipientLimiter({ max, windowMs, now = () => Date.now() }) {
-  /** @type {Map<string, number[]>} hash del correo -> marcas de tiempo de sus envíos recientes */
+  /** @type {Map<string, number[]>} hash del correo, marcas de tiempo de sus envíos recientes */
   const hits = new Map();
-  const MAX_TRACKED_RECIPIENTS = 5000; // evita que el mapa crezca sin control
+  const MAX_TRACKED_RECIPIENTS = 5000;
 
   const keyOf = (email) => createHash('sha256').update(email).digest('hex');
   const onlyRecent = (timestamps, currentTime) => timestamps.filter((ts) => currentTime - ts < windowMs);

@@ -66,17 +66,16 @@ export function loadConfig(env = process.env) {
   const dryRun = toBool(env.MAIL_DRY_RUN);
 
   const user = (env.GMAIL_USER ?? '').trim();
-  // Google muestra la contraseña de aplicación en 4 grupos ("abcd efgh ijkl mnop"): quitamos los espacios.
+  // Google muestra la contraseña de aplicación en 4 grupos ("abcd efgh ijkl mnop") quitamos los espacios
   const appPassword = (env.GMAIL_APP_PASSWORD ?? '').replace(/\s+/g, '');
 
   if (!dryRun) {
     if (!EMAIL_SHAPE.test(user) || user.includes('tu-correo')) {
-      problems.push('GMAIL_USER debe ser tu dirección de Gmail completa (ej. nombre@gmail.com).');
+      problems.push('GMAIL_USER debe ser el correo de gmail.');
     }
     if (appPassword.length !== 16) {
       problems.push(
-        'GMAIL_APP_PASSWORD debe ser la "contraseña de aplicación" de 16 letras que genera Google ' +
-          '(NO tu contraseña normal de Gmail). Mira docs/configuracion-correo.md.'
+        'GMAIL_APP_PASSWORD debe ser la "contraseña de aplicación" de 16 letras que genera Google'
       );
     }
   }

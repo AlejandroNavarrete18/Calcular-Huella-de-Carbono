@@ -16,7 +16,7 @@ export function createEmailIpLimiter(limits) {
   });
 }
 
-/** Límite general para toda la API (protege de ráfagas de peticiones). */
+/** Límite general para toda la API protege de ráfagas de peticiones */
 export function createGeneralLimiter() {
   return rateLimit({
     windowMs: 15 * 60 * 1000,

@@ -4,13 +4,6 @@ import { maskEmail } from '../utils/logger.js';
 
 /**
  * Controlador de POST /api/results/email.
- *
- * Flujo:
- *   1. Valida lo que envió el navegador.
- *   2. Descarta bots (campo trampa).
- *   3. Aplica el límite por destinatario.
- *   4. Recalcula la huella en el servidor (no se confía en cifras del cliente).
- *   5. Envía el correo y responde.
  */
 export function createResultsController({ mailService, recipientLimiter, logger }) {
   return {
@@ -26,7 +19,7 @@ export function createResultsController({ mailService, recipientLimiter, logger 
         });
       }
 
-      // Campo trampa lleno => es un bot.
+      // Campo trampa lleno = es un bot
       if (parsed.isBot) {
         logger.warn('Petición descartada por honeypot.');
         return res.status(200).json({ ok: true });

@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 /**
- * Rutas de la API (todas cuelgan de /api):
- *   GET  /api/health         -> comprobar que el servidor está vivo
- *   POST /api/results/email  -> enviar los resultados por correo
+ * Rutas de la API
+ * GET  /api/health = comprobar que el servidor está vivo
+ * POST /api/results/email  = enviar los resultados por correo
  */
 export function createRoutes({ resultsController, emailIpLimiter }) {
   const router = Router();

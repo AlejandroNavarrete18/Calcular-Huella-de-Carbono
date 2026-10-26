@@ -10,9 +10,7 @@ const MAX_EMAIL_LENGTH = 254; // límite del estándar de correo electrónico
 
 // Caracteres de control (saltos de línea, tabuladores...). Se detectan a propósito: sirven para
 // impedir la "inyección de cabeceras" en correos.
-// eslint-disable-next-line no-control-regex
 const CONTROL_CHARS = /[\u0000-\u001F\u007F]/;
-// eslint-disable-next-line no-control-regex
 const CONTROL_CHARS_GLOBAL = /[\u0000-\u001F\u007F]/g;
 
 // Forma razonable de un correo: sin espacios, comillas, comas ni caracteres peligrosos.

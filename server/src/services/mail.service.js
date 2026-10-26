@@ -7,9 +7,9 @@ import { EMAIL_LOGOS, getEmailAttachments } from '../templates/emailAssets.js';
 const DEFAULT_PREVIEW_DIR = fileURLToPath(new URL('../../.dry-run/', import.meta.url));
 
 /**
- * Crea el "transporte" de Nodemailer.
- *  - Modo normal: SMTP seguro de Gmail (puerto 465 con TLS desde el primer byte).
- *  - Modo dry-run: transporte falso que no envía nada.
+ * Crea el transporte de Nodemailer.
+ * Modo normal: SMTP seguro de Gmail (puerto 465 con TLS desde el primer byte).
+ * Modo dry-run: transporte falso que no envía nada.
  */
 function createTransporter(mailConfig) {
   if (mailConfig.dryRun) {
@@ -57,7 +57,7 @@ export function createMailService(mailConfig, logger, options = {}) {
   const transporter = createTransporter(mailConfig);
 
   return {
-    /** Comprueba al arrancar que Gmail acepta las credenciales (no envía ningún correo). */
+    /** Comprueba al arrancar que Gmail acepta las credenciales (no envía ningun correo). */
     async verify() {
       if (mailConfig.dryRun) {
         logger.warn('Modo DRY-RUN activo: los correos NO se envían, se guardan en server/.dry-run/');

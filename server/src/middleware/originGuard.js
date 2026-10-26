@@ -1,5 +1,5 @@
 /**
- * Defensa extra además de CORS: si la petición declara un origen (cabecera `Origin`) que no está
+ * Defensa extra además de CORS: si la petición declara un origen que no está
  * en la lista autorizada, se rechaza con 403.
  *
  * @param {string[]} allowedOrigins
