@@ -11,9 +11,9 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 /**
  * Construye la aplicación Express.
- * @param {{config: object, mailService: object, logger: object, recipientLimiter?: object}} deps
+ * @param {{config: object, mailService: object, logger: object}} deps
  */
-export function createApp({ config, mailService, logger, recipientLimiter }) {
+export function createApp({ config, mailService, logger }) {
   const app = express();
 
   app.disable('x-powered-by'); // no anunciar que usamos Express
@@ -37,13 +37,11 @@ export function createApp({ config, mailService, logger, recipientLimiter }) {
   app.use(express.json({ limit: '10kb' })); // las respuestas del cuestionario pesan muy poco
   app.use('/api', createGeneralLimiter());
 
-  const resultsController = createResultsController({
-    mailService,
-    logger,
-    recipientLimiter:
-      recipientLimiter ??
-      createRecipientLimiter({ max: config.limits.emailsPerRecipientPerHour, windowMs: config.limits.windowMs }),
+  const recipientLimiter = createRecipientLimiter({
+    max: config.limits.emailsPerRecipientPerHour,
+    windowMs: config.limits.windowMs,
   });
+  const resultsController = createResultsController({ mailService, recipientLimiter, logger });
   app.use('/api', createRoutes({ resultsController, emailIpLimiter: createEmailIpLimiter(config.limits) }));
 
   if (config.serveClient) {

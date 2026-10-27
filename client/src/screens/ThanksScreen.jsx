@@ -7,7 +7,7 @@ import { HeartHandshake, ArrowLeft, ArrowRight } from 'lucide-react';
  */
 export default function ThanksScreen({ onBack, onNext }) {
   return (
-    <section data-screen="thanks" className="bg-white rounded-2xl shadow-lg border border-navy-100 overflow-hidden">
+    <section className="bg-white rounded-2xl shadow-lg border border-navy-100 overflow-hidden">
       <div className="h-1.5 bg-gradient-to-r from-gold-400 to-sun-500" />
       <div className="p-5 sm:p-10">
         <div className="flex items-start gap-3 sm:gap-4">

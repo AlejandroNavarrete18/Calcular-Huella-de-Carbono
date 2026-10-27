@@ -5,7 +5,7 @@ const API_BASE = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
 const TIMEOUT_MS = 20_000;
 
 /** Error de la API con un mensaje listo para mostrar a la persona. */
-export class ApiError extends Error {
+class ApiError extends Error {
   constructor(message, { status, code } = {}) {
     super(message);
     this.name = 'ApiError';

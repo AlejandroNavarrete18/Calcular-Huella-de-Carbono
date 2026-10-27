@@ -20,7 +20,7 @@ const EMAIL_PATTERN = /^[^\s@<>()[\],;:"\\]{1,64}@[^\s@<>()[\],;:"\\]+\.[^\s@<>(
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 /** Limpia el nombre: sin caracteres de control, espacios normalizados y longitud máxima. */
-export function sanitizeName(raw) {
+function sanitizeName(raw) {
   if (typeof raw !== 'string') {
     return '';
   }
@@ -28,7 +28,7 @@ export function sanitizeName(raw) {
 }
 
 /** Correo en minúsculas y sin espacios en los extremos*/
-export function normalizeEmail(raw) {
+function normalizeEmail(raw) {
   if (typeof raw !== 'string') {
     return '';
   }
@@ -36,7 +36,7 @@ export function normalizeEmail(raw) {
 }
 
 /** ¿Tiene forma de correo válida y es seguro usarlo como destinatario? */
-export function isValidEmail(email) {
+function isValidEmail(email) {
   if (email.length > MAX_EMAIL_LENGTH || CONTROL_CHARS.test(email)) {
     return false;
   }

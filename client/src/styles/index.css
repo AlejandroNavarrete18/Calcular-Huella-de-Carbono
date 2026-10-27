@@ -74,10 +74,6 @@ h1, h2, h3, .font-display {
 @keyframes sun-spin {
   to { transform: rotate(360deg); }
 }
-@keyframes float-soft {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
 
 .enter-next { animation: enter-next 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .enter-prev { animation: enter-prev 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -89,7 +85,6 @@ h1, h2, h3, .font-display {
 .grow-height { animation: grow-height 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both; height: var(--target); }
 .grow-width { animation: grow-width 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both; width: var(--target); }
 .sun-spin { animation: sun-spin 60s linear infinite; }
-.float-soft { animation: float-soft 4s ease-in-out infinite; }
 
 /* Respeta a quien prefiere menos movimiento */
 @media (prefers-reduced-motion: reduce) {

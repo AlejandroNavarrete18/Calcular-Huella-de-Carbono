@@ -1,22 +1,16 @@
 import { useState } from 'react';
 import { Mail, ArrowRight, ArrowLeft, Loader2, TriangleAlert } from 'lucide-react';
+import FormField from '../components/form/FormField.jsx';
+import HoneypotField from '../components/form/HoneypotField.jsx';
 import { sendResultsEmail } from '../services/resultsApi.js';
-import { EMAIL_STATE } from '../constants.js';
+import { EMAIL_STATE, SEND_STATUS } from '../constants.js';
 
 const EMPTY_FORM = { nombre: '', apellidos: '', email: '', telefono: '', nacimiento: '', website: '' };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-/** Id del mensaje de error del correo (para lectores de pantalla); undefined si no hay error. */
-function getEmailErrorId(emailError) {
-  if (emailError) {
-    return 'email-error';
-  }
-  return undefined;
-}
-
 /** Texto del botón de envío según el estado (tras un error se ofrece "Reintentar"). */
 function getSubmitLabel(status) {
-  if (status === 'error') {
+  if (status === SEND_STATUS.ERROR) {
     return 'Reintentar';
   }
   return 'Siguiente';
@@ -52,11 +46,11 @@ function SubmitContent({ sending, status }) {
  */
 export default function ContactScreen({ answers, onNext, onBack }) {
   const [form, setForm] = useState(EMPTY_FORM);
-  const [status, setStatus] = useState('idle'); // idle | sending | error
+  const [status, setStatus] = useState(SEND_STATUS.IDLE);
   const [emailError, setEmailError] = useState('');
   const [sendError, setSendError] = useState('');
 
-  const sending = status === 'sending';
+  const sending = status === SEND_STATUS.SENDING;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -82,7 +76,7 @@ export default function ContactScreen({ answers, onNext, onBack }) {
       return;
     }
 
-    setStatus('sending');
+    setStatus(SEND_STATUS.SENDING);
     setSendError('');
     try {
       await sendResultsEmail({
@@ -93,7 +87,7 @@ export default function ContactScreen({ answers, onNext, onBack }) {
       });
       onNext({ state: EMAIL_STATE.SENT, email });
     } catch (error) {
-      setStatus('error');
+      setStatus(SEND_STATUS.ERROR);
       setSendError(error.message);
     }
   };
@@ -119,106 +113,60 @@ export default function ContactScreen({ answers, onNext, onBack }) {
         </div>
 
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
-          <div>
-            <label htmlFor="nombre" className="field-label">
-              Nombre
-            </label>
-            <input
-              id="nombre"
-              name="nombre"
-              type="text"
-              maxLength={40}
-              autoComplete="given-name"
-              value={form.nombre}
-              onChange={handleChange}
-              disabled={sending}
-              className="field-input"
-            />
-          </div>
-          <div>
-            <label htmlFor="apellidos" className="field-label">
-              Apellidos
-            </label>
-            <input
-              id="apellidos"
-              name="apellidos"
-              type="text"
-              maxLength={40}
-              autoComplete="family-name"
-              value={form.apellidos}
-              onChange={handleChange}
-              disabled={sending}
-              className="field-input"
-            />
-          </div>
-          <div className="sm:col-span-2">
-            <label htmlFor="email" className="field-label">
-              Correo electrónico
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              maxLength={254}
-              autoComplete="email"
-              placeholder="Aquí recibirás tus resultados"
-              value={form.email}
-              onChange={handleChange}
-              disabled={sending}
-              aria-invalid={Boolean(emailError)}
-              aria-describedby={getEmailErrorId(emailError)}
-              className="field-input"
-            />
-            {emailError && (
-              <p id="email-error" role="alert" className="mt-1.5 text-sm font-semibold text-red-700">
-                {emailError}
-              </p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="telefono" className="field-label">
-              Número de teléfono
-            </label>
-            <input
-              id="telefono"
-              name="telefono"
-              type="tel"
-              inputMode="numeric"
-              autoComplete="tel"
-              placeholder="Mínimo 10 números"
-              value={form.telefono}
-              onChange={handleChange}
-              disabled={sending}
-              className="field-input"
-            />
-          </div>
-          <div>
-            <label htmlFor="nacimiento" className="field-label">
-              Fecha de nacimiento
-            </label>
-            <input
-              id="nacimiento"
-              name="nacimiento"
-              type="date"
-              autoComplete="bday"
-              value={form.nacimiento}
-              onChange={handleChange}
-              disabled={sending}
-              className="field-input"
-            />
-          </div>
-          <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-            <label htmlFor="website">No llenar este campo</label>
-            <input
-              id="website"
-              name="website"
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-              value={form.website}
-              onChange={handleChange}
-            />
-          </div>
+          <FormField
+            id="nombre"
+            label="Nombre"
+            type="text"
+            maxLength={40}
+            autoComplete="given-name"
+            value={form.nombre}
+            onChange={handleChange}
+            disabled={sending}
+          />
+          <FormField
+            id="apellidos"
+            label="Apellidos"
+            type="text"
+            maxLength={40}
+            autoComplete="family-name"
+            value={form.apellidos}
+            onChange={handleChange}
+            disabled={sending}
+          />
+          <FormField
+            id="email"
+            label="Correo electrónico"
+            type="email"
+            maxLength={254}
+            autoComplete="email"
+            placeholder="Aquí recibirás tus resultados"
+            value={form.email}
+            onChange={handleChange}
+            disabled={sending}
+            error={emailError}
+            className="sm:col-span-2"
+          />
+          <FormField
+            id="telefono"
+            label="Número de teléfono"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            placeholder="Mínimo 10 números"
+            value={form.telefono}
+            onChange={handleChange}
+            disabled={sending}
+          />
+          <FormField
+            id="nacimiento"
+            label="Fecha de nacimiento"
+            type="date"
+            autoComplete="bday"
+            value={form.nacimiento}
+            onChange={handleChange}
+            disabled={sending}
+          />
+          <HoneypotField value={form.website} onChange={handleChange} />
         </div>
 
         <p className="mt-6 text-xs sm:text-sm text-muted leading-relaxed bg-navy-50 border-l-4 border-navy-700 rounded-r-lg p-3">
@@ -227,7 +175,7 @@ export default function ContactScreen({ answers, onNext, onBack }) {
           se envían ni se almacenan.
         </p>
 
-        {status === 'error' && (
+        {status === SEND_STATUS.ERROR && (
           <div
             role="alert"
             className="mt-5 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800"

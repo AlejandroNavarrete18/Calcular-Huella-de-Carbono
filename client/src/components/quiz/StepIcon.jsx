@@ -1,4 +1,4 @@
-import { Tv, Flame, Lightbulb, Car, Clock, Plane, Beef, Recycle, Shirt } from 'lucide-react';
+import { Tv, Flame, Lightbulb, Car, Clock, Plane, Beef, Recycle, Shirt, Smartphone } from 'lucide-react';
 
 /** Ícono de cada pregunta, según su número. */
 const ICONS_BY_STEP = {
@@ -11,6 +11,7 @@ const ICONS_BY_STEP = {
   7: Beef,
   8: Recycle,
   9: Shirt,
+  10: Smartphone,
 };
 
 export default function StepIcon({ stepNumber, className = 'w-7 h-7 text-navy-700' }) {

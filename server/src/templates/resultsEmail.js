@@ -1,10 +1,9 @@
+import { CATEGORIES } from '@huella/shared';
 import { EMAIL_LOGOS } from './emailAssets.js';
 
-/**
- * Plantilla del correo con los resultados.
- */
+/** Plantilla del correo con los resultados (HTML y texto plano). */
 
-/** Paleta institucional*/
+/** Paleta institucional. */
 const COLOR = Object.freeze({
   navy950: '#071a3b',
   navy900: '#0a2352',
@@ -23,12 +22,6 @@ const COLOR = Object.freeze({
 const FONT_TEXT = "Arial,Helvetica,sans-serif";
 const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 
-const CATEGORIES = Object.freeze([
-  { key: 'hogar', label: 'Hogar' },
-  { key: 'transporte', label: 'Transporte' },
-  { key: 'consumo', label: 'Alimentación y consumo' },
-]);
-
 const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 
 /** Escapa caracteres especiales de HTML. */
@@ -36,9 +29,6 @@ const esc = (value) => String(value).replace(/[&<>"']/g, (char) => HTML_ESCAPES[
 
 /** Número con formato mexicano: 10,493.8 */
 const formatKg = (value) => Number(value).toLocaleString('es-MX', { maximumFractionDigits: 2 });
-
-/** Quita el prefijo "RESULTADO: " del título de nivel. */
-const cleanTitle = (title) => title.replace(/^RESULTADO:\s*/i, '');
 
 function pillTextColor(background) {
   if (background.toLowerCase() === '#f4c430') {
@@ -165,7 +155,6 @@ function renderFooter() {
  */
 export function buildResultsEmail({ name, results }) {
   const greeting = buildGreeting(name);
-  const title = cleanTitle(results.title);
   const subject = `Tus resultados: ${formatKg(results.totalKg)} kg CO₂e al año · Calculadora de Huella de Carbono UAS`;
 
   const html = `<!doctype html>
@@ -179,7 +168,7 @@ export function buildResultsEmail({ name, results }) {
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${COLOR.white};border-radius:14px;overflow:hidden;border:1px solid ${COLOR.navy100};">
           <tr><td>${renderColorBand(6)}</td></tr>
           ${renderHeader()}
-          ${renderHero(title)}
+          ${renderHero(results.title)}
 
           <tr><td style="padding:28px;">
             <p style="margin:0 0 14px 0;font-family:${FONT_TEXT};font-size:16px;color:${COLOR.ink};">${esc(greeting)}</p>
@@ -218,7 +207,7 @@ export function buildResultsEmail({ name, results }) {
     '',
     greeting,
     '',
-    `RESULTADO: ${title}`,
+    `RESULTADO: ${results.title}`,
     `Tu huella estimada: ${formatKg(results.totalKg)} kg CO2e al año (${results.level}).`,
     results.treesText,
     '',

@@ -1,19 +1,34 @@
 import { useMemo } from 'react';
 import { TreePine, RotateCcw, Lightbulb, House, Car, Salad, MailCheck, MailWarning } from 'lucide-react';
-import { calculateFootprint, SEMAPHORE } from '@huella/shared';
+import { CATEGORIES, SEMAPHORE, calculateFootprint } from '@huella/shared';
 import { EMAIL_STATE } from '../constants.js';
 
-const CATEGORIES = [
-  { key: 'hogar', label: 'Hogar', icon: House },
-  { key: 'transporte', label: 'Transporte', icon: Car },
-  { key: 'consumo', label: 'Alimentación y consumo', icon: Salad },
-];
+/** Ícono de cada categoría (las categorías y sus nombres vienen de @huella/shared). */
+const CATEGORY_ICONS = { hogar: House, transporte: Car, consumo: Salad };
 
 function getReadableTextColor(color) {
   if (color === SEMAPHORE.yellow) {
     return '#a87a00';
   }
   return color;
+}
+
+/** Tarjeta con las emisiones de una categoría y su barra de progreso. */
+function CategoryCard({ label, icon: Icon, kg, percent, color }) {
+  return (
+    <div className="rounded-xl bg-navy-50 border border-navy-100 p-4">
+      <p className="flex items-center gap-2 text-xs text-navy-800 font-bold uppercase tracking-wide">
+        <Icon className="w-4 h-4 text-sun-600" />
+        {label}
+      </p>
+      <p className="mt-1 font-display text-xl font-extrabold text-navy-900">
+        {kg.toLocaleString('es-MX')} <span className="text-sm font-bold text-muted">kg CO₂e</span>
+      </p>
+      <div className="w-full h-2.5 bg-navy-100 rounded-full mt-3 overflow-hidden">
+        <div className="grow-width h-full rounded-full" style={{ '--target': `${percent}%`, backgroundColor: color }} />
+      </div>
+    </div>
+  );
 }
 
 /** Aviso sobre el envío del correo. No muestra nada si la persona no escribió su correo. */
@@ -69,7 +84,7 @@ export default function ResultsScreen({ answers, emailStatus, onRestart }) {
         <div className="p-6 sm:p-10">
           <p className="font-display text-xs font-bold tracking-[0.2em] uppercase text-gold-400">Tu resultado</p>
           <h1 className="mt-2 font-display text-2xl sm:text-4xl font-extrabold leading-tight">
-            {results.title.replace('RESULTADO: ', '')}
+            {results.title}
           </h1>
           <div className="mt-4 space-y-3 text-navy-100 text-sm sm:text-base leading-relaxed max-w-3xl">
             {results.description.map((paragraph) => (
@@ -124,23 +139,15 @@ export default function ResultsScreen({ answers, emailStatus, onRestart }) {
           Emisiones por categoría
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {CATEGORIES.map(({ key, label, icon: Icon }) => (
-            <div key={key} className="rounded-xl bg-navy-50 border border-navy-100 p-4">
-              <p className="flex items-center gap-2 text-xs text-navy-800 font-bold uppercase tracking-wide">
-                <Icon className="w-4 h-4 text-sun-600" />
-                {label}
-              </p>
-              <p className="mt-1 font-display text-xl font-extrabold text-navy-900">
-                {results.breakdown[key].toLocaleString('es-MX')}{' '}
-                <span className="text-sm font-bold text-muted">kg CO₂e</span>
-              </p>
-              <div className="w-full h-2.5 bg-navy-100 rounded-full mt-3 overflow-hidden">
-                <div
-                  className="grow-width h-full rounded-full"
-                  style={{ '--target': `${results.percentages[key]}%`, backgroundColor: results.barColors[key] }}
-                />
-              </div>
-            </div>
+          {CATEGORIES.map(({ key, label }) => (
+            <CategoryCard
+              key={key}
+              label={label}
+              icon={CATEGORY_ICONS[key]}
+              kg={results.breakdown[key]}
+              percent={results.percentages[key]}
+              color={results.barColors[key]}
+            />
           ))}
         </div>
       </section>

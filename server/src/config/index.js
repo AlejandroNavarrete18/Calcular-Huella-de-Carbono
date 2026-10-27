@@ -1,10 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
 
-/**
- * Configuración del servidor a partir de variables de entorno.
- */
-
 // Carga server/.env sin importar desde qué carpeta se arranque el proceso.
 dotenv.config({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
 
@@ -18,13 +14,16 @@ export class ConfigError extends Error {
 }
 
 const TRUE_VALUES = ['1', 'true', 'yes', 'si', 'sí'];
-const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SECRET_KEY_PATTERN = /^[0-9a-fA-F]{64}$/;
+const REQUIRED_DB_VARIABLES = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+const DEFAULT_PORT = 3001;
+const DEFAULT_DB_PORT = 3306;
 const ONE_HOUR_MS = 60 * 60 * 1000;
 
-/** Convierte "true"/"1"/"si" en booleano. Si la variable no existe, usa `fallback`. */
-function toBool(value, fallback = false) {
+/** Convierte "true"/"1"/"si" en booleano. Si la variable no existe, devuelve false. */
+function toBool(value) {
   if (value === undefined || value === '') {
-    return fallback;
+    return false;
   }
   return TRUE_VALUES.includes(String(value).toLowerCase());
 }
@@ -47,7 +46,7 @@ function toList(value, fallback) {
     .filter(Boolean);
 }
 
-/** número de proxies de confianza, o `false` si no se usa proxy. */
+/** Número de proxies de confianza, o `false` si no se usa proxy. */
 function parseTrustProxy(value) {
   if (!value) {
     return false;
@@ -56,47 +55,59 @@ function parseTrustProxy(value) {
 }
 
 /**
- * Lee las variables de entorno, las valida
- *
- * @param {NodeJS.ProcessEnv} [env=process.env]
- * @throws {ConfigError} 
+ * Problemas con las variables que solo se exigen cuando se envían correos de verdad
+ * (en modo dry-run no hacen falta).
  */
-export function loadConfig(env = process.env) {
+function findMailProblems(env) {
   const problems = [];
-  const dryRun = toBool(env.MAIL_DRY_RUN);
 
-  const user = (env.GMAIL_USER ?? '').trim();
-  // Google muestra la contraseña de aplicación en 4 grupos ("abcd efgh ijkl mnop") quitamos los espacios
-  const appPassword = (env.GMAIL_APP_PASSWORD ?? '').replace(/\s+/g, '');
-
-  if (!dryRun) {
-    if (!EMAIL_SHAPE.test(user) || user.includes('tu-correo')) {
-      problems.push('GMAIL_USER debe ser el correo de gmail.');
-    }
-    if (appPassword.length !== 16) {
-      problems.push(
-        'GMAIL_APP_PASSWORD debe ser la "contraseña de aplicación" de 16 letras que genera Google'
-      );
+  for (const name of REQUIRED_DB_VARIABLES) {
+    if (!env[name]) {
+      problems.push(`Falta la variable ${name}.`);
     }
   }
+  if (!SECRET_KEY_PATTERN.test(env.MAIL_SECRET_KEY ?? '')) {
+    problems.push('MAIL_SECRET_KEY debe tener exactamente 64 caracteres hexadecimales (32 bytes).');
+  }
+  return problems;
+}
 
-  if (problems.length > 0) {
-    throw new ConfigError(problems);
+/**
+ * Lee las variables de entorno y las valida.
+ *
+ * @param {NodeJS.ProcessEnv} [env=process.env]
+ * @throws {ConfigError} si falta alguna variable obligatoria
+ */
+export function loadConfig(env = process.env) {
+  const dryRun = toBool(env.MAIL_DRY_RUN);
+
+  if (!dryRun) {
+    const problems = findMailProblems(env);
+    if (problems.length > 0) {
+      throw new ConfigError(problems);
+    }
   }
 
   return Object.freeze({
-    nodeEnv: env.NODE_ENV ?? 'development',
-    port: toPositiveInt(env.PORT, 3001),
+    port: toPositiveInt(env.PORT, DEFAULT_PORT),
     // Orígenes (páginas web) autorizados a llamar a esta API.
     allowedOrigins: toList(env.ALLOWED_ORIGINS, 'http://localhost:5173'),
     trustProxy: parseTrustProxy(env.TRUST_PROXY),
     serveClient: toBool(env.SERVE_CLIENT),
     clientDistDir: fileURLToPath(new URL('../../../client/dist/', import.meta.url)),
+    db: Object.freeze({
+      host: env.DB_HOST,
+      port: toPositiveInt(env.DB_PORT, DEFAULT_DB_PORT),
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+      database: env.DB_NAME,
+    }),
     mail: Object.freeze({
       dryRun,
-      user,
-      appPassword,
+      secretKey: env.MAIL_SECRET_KEY,
       fromName: (env.MAIL_FROM_NAME ?? 'Calculadora de Huella de Carbono').replace(/[\r\n<>"]/g, '').trim(),
+      // Opcional: correo al que responderán las personas.
+      replyTo: (env.MAIL_REPLY_TO ?? '').trim(),
     }),
     limits: Object.freeze({
       windowMs: ONE_HOUR_MS,

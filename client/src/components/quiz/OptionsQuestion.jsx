@@ -1,3 +1,5 @@
+import { QUESTION_TYPE } from '@huella/shared';
+
 /** Clases de una opción según esté marcada o no. */
 function getOptionClassName(checked) {
   const base =
@@ -10,7 +12,7 @@ function getOptionClassName(checked) {
 
 /** ¿Está marcada esta opción? (checkbox: está en la lista; radio: es la elegida). */
 function isOptionSelected(question, answer, optionId) {
-  if (question.type === 'checkbox') {
+  if (question.type === QUESTION_TYPE.CHECKBOX) {
     return Array.isArray(answer) && answer.includes(optionId);
   }
   return answer === optionId;
@@ -18,7 +20,7 @@ function isOptionSelected(question, answer, optionId) {
 
 /** Tipo de control HTML que corresponde a la pregunta. */
 function getInputType(question) {
-  if (question.type === 'checkbox') {
+  if (question.type === QUESTION_TYPE.CHECKBOX) {
     return 'checkbox';
   }
   return 'radio';

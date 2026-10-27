@@ -1,3 +1,5 @@
+import { QUESTION_TYPE } from './questionTypes.js';
+
 /**
  * Catálogo del cuestionario: preguntas, opciones y pesos.
  * Este archivo es solo datos: la lógica esta en calculator.js.
@@ -5,14 +7,13 @@
  * @type {ReadonlyArray<object>}
  */
 export const QUESTIONS = [
-  // PREGUNTA 1: ELECTRODOMESTICOS UTILIZADOS 
   {
     id: 'electrodomesticos',
     category: 'hogar',
     number: 1,
     title: '1. ¿QUÉ APARATOS ELECTRÓNICOS TIENES EN CASA?',
     subtitle: 'SELECCIONA TODOS LOS QUE TENGAS',
-    type: 'checkbox',
+    type: QUESTION_TYPE.CHECKBOX,
     options: [
       { id: 'refrigerador', label: 'Refrigerador', kgCO2: 237 },
       { id: 'microondas', label: 'Horno de microondas', kgCO2: 19.6 },
@@ -29,23 +30,25 @@ export const QUESTIONS = [
       { id: 'ventiladores', label: 'Ventiladores', kgCO2: 96 },
     ],
   },
+
   {
     id: 'gas',
     category: 'hogar',
     number: 2,
     title: '2. EN MI DOMICILIO UTILIZO:',
-    type: 'radio',
+    type: QUESTION_TYPE.RADIO,
     options: [
       { id: 'gas_natural', label: 'Gas natural', kgCO2: 189 },
       { id: 'gas_lp', label: 'Gas LP', kgCO2: 153 },
     ],
   },
+
   {
     id: 'focos',
     category: 'hogar',
     number: 3,
     title: '3. EN MI CASA LOS FOCOS SON:',
-    type: 'radio',
+    type: QUESTION_TYPE.RADIO,
     options: [
       { id: 'led', label: 'LED', kgCO2: 12 },
       { id: 'ahorradores', label: 'Ahorradores', kgCO2: 31 },
@@ -53,13 +56,14 @@ export const QUESTIONS = [
       { id: 'no_se', label: 'No lo sé', kgCO2: 35 },
     ],
   },
+
   {
     id: 'transporte',
     category: 'transporte',
     number: 4,
     title: '4. ¿CÓMO TE TRANSPORTAS PARA IR AL TRABAJO O A LA ESCUELA?',
     subtitle: 'SELECCIONA LAS OPCIONES QUE APLIQUEN',
-    type: 'checkbox',
+    type: QUESTION_TYPE.CHECKBOX,
     options: [
       { id: 'auto', label: 'Auto', kgCO2: 4160 },
       { id: 'autobus', label: 'Autobús', kgCO2: 310 },
@@ -71,13 +75,13 @@ export const QUESTIONS = [
       { id: 'caminando', label: 'Voy caminando', kgCO2: 0 },
     ],
   },
-// PREGUNTA 5: TIEMPO DE RECORRIDO
+
   {
     id: 'tiempo_recorrido',
     category: 'transporte',
     number: 5,
     title: '5. ¿EN CUÁNTO TIEMPO HACES ESE RECORRIDO?',
-    type: 'radio',
+    type: QUESTION_TYPE.RADIO,
     options: [
       { id: 'menos_10', label: 'Menos de 10 minutos', hours: 0.08 },
       { id: '10_20', label: 'Entre 10 y 20 minutos', hours: 0.25 },
@@ -88,12 +92,13 @@ export const QUESTIONS = [
       { id: 'mas_3_horas', label: 'Más de tres horas', hours: 3.5 },
     ],
   },
+
   {
     id: 'vuelos',
     category: 'transporte',
     number: 6,
     title: '6. ¿CON QUÉ FRECUENCIA VUELAS EN AVIÓN?',
-    type: 'radio',
+    type: QUESTION_TYPE.RADIO,
     options: [
       { id: 'frecuente', label: 'Viajero frecuente (más de dos vuelos int. y dos nac. al año)', kgCO2: 4600 },
       { id: 'int_1', label: 'Aproximadamente un vuelo (ida y vuelta) internacional al año', kgCO2: 2000 },
@@ -103,13 +108,12 @@ export const QUESTIONS = [
     ],
   },
 
-  // PREGUNTA 7 FRECUENCIA CONSUMO DE CARNE (MATRIZ)
   {
     id: 'carne_matriz',
     category: 'consumo',
     number: 7,
     title: '7. ¿CON QUÉ FRECUENCIA COMES CARNE DE?',
-    type: 'matrix',
+    type: QUESTION_TYPE.MATRIX,
     columns: [
       { id: 'diario', label: 'Diario' },
       { id: '4_6_dias', label: '4-6 días a la semana' },
@@ -129,20 +133,21 @@ export const QUESTIONS = [
     category: 'consumo',
     number: 8,
     title: '8. ¿CON QUÉ REGULARIDAD UTILIZAS PLÁSTICOS DE UN SOLO USO?',
-    type: 'radio',
+    type: QUESTION_TYPE.RADIO,
     options: [
       { id: 'diario', label: 'Diario', kgCO2: 8 },
-      { id: 'semanal', label: 'De vez en cuando (1 vez por semana)', kgCO2: 3 }, 
+      { id: 'semanal', label: 'De vez en cuando (1 vez por semana)', kgCO2: 3 },
       { id: 'rara_vez', label: 'Rara vez', kgCO2: 1 },
       { id: 'no_uso', label: 'No uso plástico', kgCO2: 0 },
     ],
   },
+
   {
     id: 'ropa',
     category: 'consumo',
     number: 9,
     title: '9. LA ROPA QUE UTILIZO:',
-    type: 'radio',
+    type: QUESTION_TYPE.RADIO,
     options: [
       { id: 'nueva_importada', label: 'Siempre es nueva y de importación', kgCO2: 403 },
       { id: 'nueva_nacional', label: 'Siempre es nueva y nacional', kgCO2: 254 },
@@ -151,13 +156,12 @@ export const QUESTIONS = [
     ],
   },
 
-  // PREGUNTA 10 DISPOSITIVOS ELECTRÓNICOS (MATRIZ)
   {
     id: 'dispositivos_matriz',
     category: 'consumo',
     number: 10,
     title: '10. CADA CUÁNTO CAMBIO MIS DISPOSITIVOS ELECTRÓNICOS',
-    type: 'matrix',
+    type: QUESTION_TYPE.MATRIX,
     columns: [
       { id: 'cada_6_meses', label: 'Cada 6 meses' },
       { id: 'cada_ano', label: 'Cada año' },

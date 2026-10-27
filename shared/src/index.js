@@ -1,6 +1,7 @@
-/** Punto de entrada del paquete @huella/shared. */
+/** Punto de entrada del paquete @huella/shared: solo lo que usan el cliente y el servidor. */
 export { QUESTIONS } from './questions.js';
+export { QUESTION_TYPE } from './questionTypes.js';
+export { CATEGORIES } from './categories.js';
 export { calculateFootprint } from './calculator.js';
 export { isQuestionAnswered, getAnswerErrors } from './answers.js';
-export { LEVELS, SEMAPHORE, getLevel } from './levels.js';
-export { buildRecommendations } from './recommendations.js';
+export { SEMAPHORE } from './levels.js';

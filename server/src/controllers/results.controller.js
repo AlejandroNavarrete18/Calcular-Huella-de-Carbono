@@ -1,6 +1,6 @@
 import { calculateFootprint } from '@huella/shared';
 import { validateEmailRequest } from '../validators/results.validator.js';
-import { maskEmail } from '../utils/logger.js';
+import { maskEmail } from '../utils/maskEmail.js';
 
 /**
  * Controlador de POST /api/results/email.

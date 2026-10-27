@@ -1,20 +1,23 @@
 import { createHash } from 'node:crypto';
 
+const MAX_TRACKED_RECIPIENTS = 5000;
+
 /**
  * Límite de correos por DESTINATARIO (además del límite por IP).
  * Evita que alguien use el servidor para llenar de correos la bandeja de otra persona.
- * @param {{max: number, windowMs: number, now?: () => number}} options
+ *
+ * @param {{max: number, windowMs: number}} options
  */
-export function createRecipientLimiter({ max, windowMs, now = () => Date.now() }) {
-  /** @type {Map<string, number[]>} hash del correo, marcas de tiempo de sus envíos recientes */
+export function createRecipientLimiter({ max, windowMs }) {
+  /** @type {Map<string, number[]>} hash del correo -> marcas de tiempo de sus envíos recientes */
   const hits = new Map();
-  const MAX_TRACKED_RECIPIENTS = 5000;
 
   const keyOf = (email) => createHash('sha256').update(email).digest('hex');
   const onlyRecent = (timestamps, currentTime) => timestamps.filter((ts) => currentTime - ts < windowMs);
 
+  /** Olvida a los destinatarios sin envíos recientes para que el mapa no crezca sin límite. */
   function sweep() {
-    const currentTime = now();
+    const currentTime = Date.now();
     for (const [key, timestamps] of hits) {
       const recent = onlyRecent(timestamps, currentTime);
       if (recent.length > 0) {
@@ -28,7 +31,7 @@ export function createRecipientLimiter({ max, windowMs, now = () => Date.now() }
   return {
     /** Intenta "gastar" un envío. Devuelve false si el destinatario ya alcanzó su límite. */
     tryConsume(email) {
-      const currentTime = now();
+      const currentTime = Date.now();
       const key = keyOf(email);
       const recent = onlyRecent(hits.get(key) ?? [], currentTime);
 
@@ -52,7 +55,5 @@ export function createRecipientLimiter({ max, windowMs, now = () => Date.now() }
         timestamps.pop();
       }
     },
-
-    sweep,
   };
 }

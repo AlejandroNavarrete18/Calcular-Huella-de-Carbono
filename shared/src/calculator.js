@@ -19,7 +19,7 @@ const THERMOMETER_CAP_PERCENT = 98;
 /** Índice de preguntas por id*/
 const QUESTIONS_BY_ID = new Map(QUESTIONS.map((question) => [question.id, question]));
 
-/** @returns {object} */
+/** Busca una pregunta por id; lanza error si no existe. */
 function getQuestion(id) {
   const question = QUESTIONS_BY_ID.get(id);
   if (!question) {
@@ -102,9 +102,9 @@ function calculateCommute(answers) {
   return (sum / countedModes) * hoursOption.hours;
 }
 
-/** Porcentaje entero (0-100) que representa `sum` respecto de `max`. */
-function toPercent(sum, max) {
-  return Math.min(Number((100 * (sum / max)).toFixed()), 100);
+/** Porcentaje entero que representa `sum` respecto de `max`, sin pasar de `cap`. */
+function toPercent(sum, max, cap = 100) {
+  return Math.min(Number((100 * (sum / max)).toFixed()), cap);
 }
 
 /** Color de la barra según el porcentaje que ocupa. */
@@ -173,7 +173,7 @@ export function calculateFootprint(answers) {
       transporte: getBarColor(percentages.transporte),
       consumo: getBarColor(percentages.consumo),
     },
-    termoPercent: Math.min(Number((100 * (total / THERMOMETER_MAX_KG)).toFixed()), THERMOMETER_CAP_PERCENT),
+    termoPercent: toPercent(total, THERMOMETER_MAX_KG, THERMOMETER_CAP_PERCENT),
     level: level.name,
     levelColor: level.color,
     title: level.title,

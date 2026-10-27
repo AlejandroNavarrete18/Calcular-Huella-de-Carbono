@@ -16,5 +16,12 @@ export const EMAIL_STATE = Object.freeze({
   FAILED: 'failed', // el envío falló y se continuó sin correo
 });
 
+/** Estado del formulario de contacto mientras se envía el correo. */
+export const SEND_STATUS = Object.freeze({
+  IDLE: 'idle',
+  SENDING: 'sending',
+  ERROR: 'error',
+});
+
 /** Duración (ms) de la animación de salida entre pantallas. */
 export const LEAVE_MS = 220;

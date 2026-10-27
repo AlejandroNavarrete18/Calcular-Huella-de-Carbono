@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { QUESTIONS, isQuestionAnswered } from '@huella/shared';
+import { QUESTIONS, QUESTION_TYPE, isQuestionAnswered } from '@huella/shared';
 
 /** Agrega el elemento a la lista si no está, o lo quita si ya estaba. */
 function toggleListItem(list, item) {
@@ -23,7 +23,7 @@ export function useQuiz() {
   /** Marca/desmarca una opción (checkbox) o la elige (radio). */
   const selectOption = useCallback((targetQuestion, optionId) => {
     setAnswers((previous) => {
-      if (targetQuestion.type === 'checkbox') {
+      if (targetQuestion.type === QUESTION_TYPE.CHECKBOX) {
         const currentList = previous[targetQuestion.id] ?? [];
         return { ...previous, [targetQuestion.id]: toggleListItem(currentList, optionId) };
       }
@@ -38,8 +38,6 @@ export function useQuiz() {
       return { ...previous, [questionId]: { ...currentMatrix, [rowId]: columnId } };
     });
   }, []);
-
-  const goToStep = useCallback((step) => setCurrentStep(step), []);
 
   /** Borra todas las respuestas y vuelve a la primera pregunta. */
   const reset = useCallback(() => {
@@ -56,7 +54,7 @@ export function useQuiz() {
     isStepValid,
     selectOption,
     selectMatrixCell,
-    goToStep,
+    goToStep: setCurrentStep,
     reset,
   };
 }
