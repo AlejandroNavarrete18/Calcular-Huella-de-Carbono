@@ -22,6 +22,20 @@
   --color-muted: #5b6784;
 }
 
+/* ───────────── Escalamiento Global Ajustado ───────────── */
+html {
+  /* Tamaño estándar promedio para todas las pantallas */
+  font-size: 16px; 
+}
+
+@media (min-width: 1536px) {
+  html {
+    /* Aumento ligero solo en monitores muy grandes */
+    font-size: 17px; 
+  }
+}
+
+/* ───────────── Estilos Base ───────────── */
 body {
   margin: 0;
   background: var(--color-paper);
@@ -161,7 +175,6 @@ h1, h2, h3, .font-display {
   cursor: not-allowed;
 }
 
-/* Teléfonos estrechos: botones más compactos para que "Atrás" y "Siguiente" quepan en una sola fila.*/
 @media (max-width: 400px) {
   .btn-primary {
     padding: 0.75rem 1.15rem;
@@ -202,7 +215,6 @@ h1, h2, h3, .font-display {
   box-shadow: 0 0 0 4px rgb(23 63 138 / 0.12);
 }
 
-/* Casillas y radios con el color institucional */
 input[type='checkbox'],
 input[type='radio'] {
   accent-color: var(--color-navy-700);
